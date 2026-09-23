@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>雲端筆記｜我的 AWS 學習紀錄</title>
+<style>
+  :root{
+    --ink:#12213a;
+    --paper:#f5f1e8;
+    --line:#12213a;
+    --gold:#b8863b;
+    --sage:#4c6b57;
+    --card:#fffdf7;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Noto Serif TC","Times New Roman",serif;
+    line-height:1.75;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px;}
+
+  header.hero{
+    border-bottom:2px solid var(--ink);
+    padding:64px 0 40px;
+  }
+  .kicker{
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:13px;
+    letter-spacing:.08em;
+    color:var(--sage);
+    margin:0 0 10px;
+  }
+  h1{
+    font-size:42px;
+    margin:0 0 14px;
+    line-height:1.3;
+  }
+  .hero p{
+    font-size:16px;
+    max-width:52ch;
+    color:#3a4256;
+  }
+  .route{
+    font-family:"Noto Sans TC",monospace;
+    font-size:13px;
+    color:var(--gold);
+    background:var(--card);
+    border:1px solid var(--line);
+    display:inline-block;
+    padding:6px 12px;
+    margin-top:18px;
+    border-radius:2px;
+  }
+
+  section{padding:44px 0;border-bottom:1px solid #d8d0bd;}
+  section:last-of-type{border-bottom:none;}
+  h2{
+    font-size:22px;
+    margin:0 0 20px;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+  }
+  @media (max-width:600px){ .grid{grid-template-columns:1fr;} }
+
+  .term{
+    background:var(--card);
+    border:1px solid var(--line);
+    padding:18px 20px;
+    border-radius:2px;
+  }
+  .term h3{
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:15px;
+    margin:0 0 8px;
+    color:var(--sage);
+  }
+  .term p{
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:13.5px;
+    margin:0;
+    color:#4a4a4a;
+  }
+
+  .flow{
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:14px;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:8px;
+    background:var(--card);
+    border:1px solid var(--line);
+    padding:18px 20px;
+    border-radius:2px;
+  }
+  .flow b{color:var(--ink);}
+  .flow .arrow{color:var(--gold);}
+
+  table{width:100%;border-collapse:collapse;font-family:"Noto Sans TC",sans-serif;font-size:13.5px;}
+  th,td{border-bottom:1px solid #d8d0bd;padding:10px 4px;text-align:left;}
+  th{color:var(--sage);font-weight:600;}
+
+  .signoff{
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:13px;
+    color:#8a8368;
+    padding:30px 0 60px;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="hero">
+    <p class="kicker">課堂作業 · AWS 網路與資安基礎</p>
+    <h1>把一個網址，<br>拆成看得懂的樣子。</h1>
+    <p>這是我本週在 AWS 課堂上整理的學習成果頁面，記錄了憑證、HTTP/HTTPS、Port、防火牆、CIDR、DNS 與 URL 的重點概念，並打算部署到 AWS 上實際驗證這些觀念如何運作。</p>
+    <div class="route">https://your-bucket.s3-website.amazonaws.com</div>
+  </header>
+
+  <section>
+    <h2>今天學到的六個關鍵字</h2>
+    <div class="grid">
+      <div class="term">
+        <h3>憑證 Certificate</h3>
+        <p>由 CA 核發，證明網站身分並提供加密用的公鑰，是 HTTPS 的基礎。</p>
+      </div>
+      <div class="term">
+        <h3>Port 連接埠</h3>
+        <p>同一台主機用來區分不同服務的號碼，例如 80 是 HTTP，443 是 HTTPS。</p>
+      </div>
+      <div class="term">
+        <h3>Security Group</h3>
+        <p>Inbound 管進來的流量、Outbound 管出去的流量，是 EC2 的防火牆規則。</p>
+      </div>
+      <div class="term">
+        <h3>CIDR</h3>
+        <p>用「IP / 前綴長度」表示一段位址範圍，例如 192.168.1.0/24。</p>
+      </div>
+      <div class="term">
+        <h3>DNS</h3>
+        <p>把好記的域名翻譯成電腦看得懂的 IP 位址，網際網路的電話簿。</p>
+      </div>
+      <div class="term">
+        <h3>URL</h3>
+        <p>協定 + 主機 + Port + 路徑 + 參數，完整指出網路上的某一個資源。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>一次連線背後發生的事</h2>
+    <div class="flow">
+      <span>輸入網址</span><span class="arrow">→</span>
+      <span>DNS 查詢 IP</span><span class="arrow">→</span>
+      <span>連到主機的 <b>Port</b></span><span class="arrow">→</span>
+      <span>Security Group 檢查 <b>Inbound</b> 規則</span><span class="arrow">→</span>
+      <span>用<b>憑證</b>建立 HTTPS 加密連線</span><span class="arrow">→</span>
+      <span>拿到網頁內容</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>部署檢查清單</h2>
+    <table>
+      <tr><th>項目</th><th>狀態</th></tr>
+      <tr><td>網頁檔案（index.html）已完成</td><td>✅ 已完成</td></tr>
+      <tr><td>上傳到 S3 靜態網站託管 / EC2</td><td>待課堂上實作</td></tr>
+      <tr><td>Security Group 開放 80 / 443</td><td>待確認</td></tr>
+      <tr><td>使用瀏覽器以 http:// 或 https:// 開啟測試</td><td>待驗證</td></tr>
+    </table>
+  </section>
+
+  <p class="signoff">本頁可直接部署於 AWS S3 靜態網站託管或 EC2，用來實際體驗課堂上教的網路與防火牆觀念。</p>
+
+</div>
+
+</body>
+</html>
